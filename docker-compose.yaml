@@ -6,7 +6,7 @@ services:
     ports:
       - 9042:9042
     volumes:
-      - ~/University-Big-Data/Data:/var/lib/cassandra
-      - ~/University-Big-Data/doc:/opt/cassandra/doc
+      - ./Data:/var/lib/cassandra
+      - ./doc:/opt/cassandra/doc
     environment:
       - CASSANDRA_CLUSTER_NAME=cloudinfra

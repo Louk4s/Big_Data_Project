@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  cassandra:
+    image: cassandra:latest
+    ports:
+      - 9042:9042
+    volumes:
+      - ~/University-Big-Data/Data:/var/lib/cassandra
+      - ~/University-Big-Data/doc:/opt/cassandra/doc
+    environment:
+      - CASSANDRA_CLUSTER_NAME=cloudinfra

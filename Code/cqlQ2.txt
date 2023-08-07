@@ -1,10 +1,9 @@
 //cql question 2 Project Big Data
 
-CREATE KEYSPACE recipes 
-	WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1};
+CREATE KEYSPACE recipe 
+WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1};
 
-
-CREATE TABLE recipes.recipes_by_score (
+CREATE TABLE recipe.recipes_by_score (
 	score smallint,
 	name text,
 	id int,
@@ -14,16 +13,13 @@ CREATE TABLE recipes.recipes_by_score (
 ) WITH comment = 'Q1. Show popular recipes within a three months period'
 AND CLUSTERING ORDER BY (name DESC, id ASC); 
 
-
-
 //'Q2. Search recipes by title/name'
-CREATE MATERIALIZED VIEW recipes.recipes_by_name AS
-	SELECT * FROM recipes.recipes_by_score
-	WHERE name IS NOT NULL and score IS NOT NULL and id IS NOT NULL
-	PRIMARY KEY (name, score, id)
+CREATE MATERIALIZED VIEW recipe.recipes_by_name AS
+SELECT * FROM recipe.recipes_by_score
+WHERE name IS NOT NULL and score IS NOT NULL and id IS NOT NULL
+PRIMARY KEY (name, score, id);
 
-
-CREATE TABLE recipes.recipes_by_number_of_steps (,
+CREATE TABLE recipe.recipes_by_number_of_steps (
 	number_of_steps smallint,
 	name text,
 	score smallint,
@@ -34,8 +30,8 @@ CREATE TABLE recipes.recipes_by_number_of_steps (,
 ) WITH comment = 'Q3. Search recipes by difficulty'
 AND CLUSTERING ORDER BY (name DESC, score DESC, id ASC);
 
-CREATE TABLE recipes.recipes_by_tag (,
-	tags set<text>,
+CREATE TABLE recipe.recipes_by_tag (
+	tags frozen<set<text>>,
 	name text,
 	score smallint,
 	id int,
@@ -45,8 +41,7 @@ CREATE TABLE recipes.recipes_by_tag (,
 ) WITH comment = 'Q5. Check the top-n recipes related to a specific tag'
 AND CLUSTERING ORDER BY (name DESC, score DESC, id ASC);
 
-
-CREATE TABLE recipes.recipes(,
+CREATE TABLE recipe.recipes(
 	id int,
 	name text,
 	minutes smallint,
@@ -63,6 +58,3 @@ CREATE TABLE recipes.recipes(,
 	PRIMARY KEY ((id),name)
 ) WITH comment = 'Q4. View Recipe Details'
 AND CLUSTERING ORDER BY (name DESC);
-
-
-

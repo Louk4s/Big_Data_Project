@@ -1,5 +1,6 @@
-//cql question 2 Project Big Data
+//CQL Question 2 Project Big Data
 
+DROP KEYSPACE IF EXISTS recipe;
 CREATE KEYSPACE recipe 
 WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1};
 
@@ -30,17 +31,6 @@ CREATE TABLE recipe.recipes_by_number_of_steps (
 ) WITH comment = 'Q3. Search recipes by difficulty'
 AND CLUSTERING ORDER BY (name DESC, score DESC, id ASC);
 
-CREATE TABLE recipe.recipes_by_tag (
-	tags frozen<set<text>>,
-	name text,
-	score smallint,
-	id int,
-	minutes smallint,
-	date_submitted date,
-	PRIMARY KEY ((tags), name, score, id)
-) WITH comment = 'Q5. Check the top-n recipes related to a specific tag'
-AND CLUSTERING ORDER BY (name DESC, score DESC, id ASC);
-
 CREATE TABLE recipe.recipes(
 	id int,
 	name text,
@@ -58,3 +48,14 @@ CREATE TABLE recipe.recipes(
 	PRIMARY KEY ((id),name)
 ) WITH comment = 'Q4. View Recipe Details'
 AND CLUSTERING ORDER BY (name DESC);
+
+CREATE TABLE recipe.recipes_by_tag (
+	tags frozen<set<text>>,
+	name text,
+	score smallint,
+	id int,
+	minutes smallint,
+	date_submitted date,
+	PRIMARY KEY ((tags), name, score, id)
+) WITH comment = 'Q5. View the top-n recipes related to a specific tag'
+AND CLUSTERING ORDER BY (name DESC, score DESC, id ASC);

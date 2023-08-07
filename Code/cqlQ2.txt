@@ -1,0 +1,51 @@
+//cql question 2 Project Big Data
+
+CREATE KEYSPACE recipes 
+	WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1};
+
+
+CREATE TABLE recipes.recipes_by_score (
+	score smallint,
+	name text,
+	id int,
+	minutes smallint,
+	date_submitted date,
+	PRIMARY KEY ((score), name, id)
+) WITH comment = 'Q1. Show popular recipes within a three months period'
+AND CLUSTERING ORDER BY (name DESC, id ASC); 
+
+
+
+//'Q2. Search recipes by title/name'
+CREATE MATERIALIZED VIEW recipes.recipes_by_name AS
+	SELECT * FROM recipes.recipes_by_score
+	WHERE name IS NOT NULL and score IS NOT NULL and id IS NOT NULL
+	PRIMARY KEY (name, score, id)
+
+
+CREATE TABLE recipes.recipes_by_number_of_steps (,
+	number_of_steps smallint,
+	name text,
+	score smallint,
+	id int,
+	minutes smallint,
+	date_submitted date,
+	PRIMARY KEY (number_of_steps, name, score, id)
+) WITH comment = 'Q3. Search recipes by difficulty'
+AND CLUSTERING ORDER BY (name DESC, score DESC, id ASC);
+
+CREATE TABLE recipes.recipes_by_tag (,
+	tags set<text>,
+	name text,
+	score smallint,
+	id int,
+	minutes smallint,
+	date_submitted date,
+	PRIMARY KEY (tags, name, score, id)
+) WITH comment = 'Q5. Check the top-n recipes related to a specific tag'
+AND CLUSTERING ORDER BY (name DESC, score DESC, id ASC);
+
+
+
+
+

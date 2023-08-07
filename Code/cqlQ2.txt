@@ -30,7 +30,7 @@ CREATE TABLE recipes.recipes_by_number_of_steps (,
 	id int,
 	minutes smallint,
 	date_submitted date,
-	PRIMARY KEY (number_of_steps, name, score, id)
+	PRIMARY KEY ((number_of_steps), name, score, id)
 ) WITH comment = 'Q3. Search recipes by difficulty'
 AND CLUSTERING ORDER BY (name DESC, score DESC, id ASC);
 
@@ -41,11 +41,28 @@ CREATE TABLE recipes.recipes_by_tag (,
 	id int,
 	minutes smallint,
 	date_submitted date,
-	PRIMARY KEY (tags, name, score, id)
+	PRIMARY KEY ((tags), name, score, id)
 ) WITH comment = 'Q5. Check the top-n recipes related to a specific tag'
 AND CLUSTERING ORDER BY (name DESC, score DESC, id ASC);
 
 
+CREATE TABLE recipes.recipes(,
+	id int,
+	name text,
+	minutes smallint,
+	contributor_id text,
+	score smallint,
+	date_submitted date,
+	tags set<text>,
+	nutrition list<float>,
+	steps list<text>,
+	numbers_of_steps smallint,
+	description text,
+	ingredients set<text>,
+	number_of_ingredients smallint,
+	PRIMARY KEY ((id),name)
+) WITH comment = 'Q4. View Recipe Details'
+AND CLUSTERING ORDER BY (name DESC);
 
 
 

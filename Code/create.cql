@@ -5,10 +5,10 @@ CREATE KEYSPACE recipe
 WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1};
 
 CREATE TABLE recipe.recipes_by_score (
-	score smallint,
+	score float,
 	name text,
 	id int,
-	minutes smallint,
+	minutes int,
 	date_submitted date,
 	PRIMARY KEY ((score), name, id)
 ) WITH comment = 'Q1. Show popular recipes within a three months period'
@@ -23,9 +23,9 @@ PRIMARY KEY (name, score, id);
 CREATE TABLE recipe.recipes_by_number_of_steps (
 	number_of_steps smallint,
 	name text,
-	score smallint,
+	score float,
 	id int,
-	minutes smallint,
+	minutes int,
 	date_submitted date,
 	PRIMARY KEY ((number_of_steps), name, score, id)
 ) WITH comment = 'Q3. Search recipes by difficulty'
@@ -34,14 +34,14 @@ AND CLUSTERING ORDER BY (name DESC, score DESC, id ASC);
 CREATE TABLE recipe.recipes(
 	id int,
 	name text,
-	minutes smallint,
-	contributor_id text,
-	score smallint,
+	minutes int,
+	contributor_id int,
+	score float,
 	date_submitted date,
 	tags set<text>,
 	nutrition list<float>,
 	steps list<text>,
-	numbers_of_steps smallint,
+	number_of_steps smallint,
 	description text,
 	ingredients set<text>,
 	number_of_ingredients smallint,
@@ -52,9 +52,9 @@ AND CLUSTERING ORDER BY (name DESC);
 CREATE TABLE recipe.recipes_by_tag (
 	tags frozen<set<text>>,
 	name text,
-	score smallint,
+	score float,
 	id int,
-	minutes smallint,
+	minutes int,
 	date_submitted date,
 	PRIMARY KEY ((tags), name, score, id)
 ) WITH comment = 'Q5. View the top-n recipes related to a specific tag'

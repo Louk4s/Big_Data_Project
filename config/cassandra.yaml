@@ -550,7 +550,7 @@ seed_provider:
     parameters:
       # seeds is actually a comma-delimited list of addresses.
       # Ex: "<ip1>,<ip2>,<ip3>"
-      - seeds: "172.18.0.2"
+      - seeds: "172.19.0.2"
 
 # For workloads with more data than can fit in memory, Cassandra's
 # bottleneck will be reads that need to fetch data from
@@ -760,7 +760,7 @@ ssl_storage_port: 7001
 #
 # Setting listen_address to 0.0.0.0 is always wrong.
 #
-listen_address: 172.18.0.2
+listen_address: 172.19.0.2
 
 # Set listen_address OR listen_interface, not both. Interfaces must correspond
 # to a single address, IP aliasing is not supported.
@@ -774,7 +774,7 @@ listen_address: 172.18.0.2
 
 # Address to broadcast to other Cassandra nodes
 # Leaving this blank will set it to the same value as listen_address
-broadcast_address: 172.18.0.2
+broadcast_address: 172.19.0.2
 
 # When using multiple physical network interfaces, set this
 # to true to listen on broadcast_address in addition to
@@ -872,7 +872,7 @@ rpc_address: 0.0.0.0
 # be set to 0.0.0.0. If left blank, this will be set to the value of
 # rpc_address. If rpc_address is set to 0.0.0.0, broadcast_rpc_address must
 # be set.
-broadcast_rpc_address: 172.18.0.2
+broadcast_rpc_address: 172.19.0.2
 
 # enable or disable keepalive on rpc/native connections
 rpc_keepalive: true
@@ -1057,34 +1057,34 @@ uuid_sstable_identifiers_enabled: false
 # How long the coordinator should wait for read operations to complete.
 # Lowest acceptable value is 10 ms.
 # Min unit: ms
-read_request_timeout: 5000ms
+read_request_timeout: 50000ms
 # How long the coordinator should wait for seq or index scans to complete.
 # Lowest acceptable value is 10 ms.
 # Min unit: ms
-range_request_timeout: 10000ms
+range_request_timeout: 100000ms
 # How long the coordinator should wait for writes to complete.
 # Lowest acceptable value is 10 ms.
 # Min unit: ms
-write_request_timeout: 2000ms
+write_request_timeout: 20000ms
 # How long the coordinator should wait for counter writes to complete.
 # Lowest acceptable value is 10 ms.
 # Min unit: ms
-counter_write_request_timeout: 5000ms
+counter_write_request_timeout: 50000ms
 # How long a coordinator should continue to retry a CAS operation
 # that contends with other proposals for the same row.
 # Lowest acceptable value is 10 ms.
 # Min unit: ms
-cas_contention_timeout: 1000ms
+cas_contention_timeout: 10000ms
 # How long the coordinator should wait for truncates to complete
 # (This can be much longer, because unless auto_snapshot is disabled
 # we need to flush first so we can snapshot before removing the data.)
 # Lowest acceptable value is 10 ms.
 # Min unit: ms
-truncate_request_timeout: 60000ms
+truncate_request_timeout: 600000ms
 # The default timeout for other, miscellaneous operations.
 # Lowest acceptable value is 10 ms.
 # Min unit: ms
-request_timeout: 10000ms
+request_timeout: 100000ms
 
 # Defensive settings for protecting Cassandra from true network partitions.
 # See (CASSANDRA-14358) for details.

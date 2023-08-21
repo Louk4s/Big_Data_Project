@@ -20,13 +20,12 @@ WHERE name IS NOT NULL AND score IS NOT NULL AND id IS NOT NULL AND date_submitt
 PRIMARY KEY ((name), score, id, date_submitted);
 
 CREATE TABLE recipe.recipes_by_difficulty (
-	number_of_steps smallint,
-	minutes int,
+	difficulty text,
 	score float,
 	id int,
 	name text,
 	date_submitted date,
-	PRIMARY KEY ((number_of_steps, minutes), score, id)
+	PRIMARY KEY (difficulty, score, id)
 ) WITH comment = 'Q3. Search recipes by difficulty'
 AND CLUSTERING ORDER BY (score DESC, id ASC);
 
@@ -44,6 +43,7 @@ CREATE TABLE recipe.recipes(
 	description text,
 	ingredients set<text>,
 	number_of_ingredients smallint,
+	difficulty text,
 	PRIMARY KEY ((id),name)
 ) WITH comment = 'Q4. View Recipe Details'
 AND CLUSTERING ORDER BY (name DESC);

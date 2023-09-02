@@ -1,0 +1,142 @@
+1. -------------------------------------
+Εμφάνιση των 30 συνταγών με την υψηλότερη μέση βαθμολογία μεταξύ 01/01/2012 και 31/05/2012
+----------------------------------------
+CREATE INDEX recipes_by_score_date_submitted_idx ON recipe.recipes_by_score (date_submitted);
+
+
+SELECT name 
+FROM recipe.recipes_by_score 
+WHERE date_submitted >= '2012-01-01' AND date_submitted <= '2012-05-31'  
+ORDER BY name DESC
+LIMIT 30
+ALLOW FILTERING;
+----------------------------> InvalidRequest: Error from server: code=2200 [Invalid query] message="ORDER BY is only supported when the partition key is restricted by an EQ or an IN."
+
+
+
+SELECT name 
+FROM recipe.recipes_by_score 
+WHERE date_submitted >= '2012-01-01' AND date_submitted <= '2012-05-31'
+  AND partition_key_column = 'score'
+ORDER BY name DESC
+LIMIT 30;
+
+select * 
+from recipe.recipes_by_score 
+WHERE date_submitted >= '2012-01-01' AND date_submitted <= '2012-05-31'
+
+
+InvalidRequest: Error from server: code=2200 [Invalid query] message="Cannot execute this query as it might involve data filtering and thus may have unpredictable performance. 
+If you want to execute this query despite the performance unpredictability, use ALLOW FILTERING"
+
+
+2. -----------------------------------------
+Εμφάνιση όλων των λεπτομερειών για την ταινία -> ΣΥΝΤΑΓΉ «chic greek salad» 
+(κατηγορία δυσκολίας, διατροφικές αξίες, βήματα, περιγραφή, μέση βαθμολογία)
+--------------------------------------------
+
+SELECT number_of_steps, nutrition, steps, description, score  
+FROM recipe.recipes_by_name
+WHERE name = 'chic greek salad'
+LIMIT 1
+ALLOW FILTERING;
+
+
+
+SELECT *
+FROM recipe.recipes_by_name
+WHERE name = 'chic greek salad'
+ALLOW FILTERING;
+----> name | score | id | date_submitted | minutes
+------+-------+----+----------------+---------
+
+
+SELECT *
+FROM recipe.recipes_by_name
+WHERE name = 'greek salad'
+ALLOW FILTERING;
+
+--->
+name        | score | id    | date_submitted | minutes
+-------------+-------+-------+----------------+---------
+ greek salad |     5 | 41202 |     2002-09-24 |      20
+ greek salad |     5 | 77120 |     2003-11-21 |      35
+
+
+
+
+Since Cassandra is designed for high-performance queries that primarily involve indexed access, retrieving data based on non-primary key attributes can be problematic and inefficient. To achieve this, you would typically create additional tables or materialized views specifically tailored for such queries.
+
+In your existing schema, the recipes table has a primary key defined as (id, name). This means that querying based on the recipe name directly is not efficient. To retrieve the information you need, you would usually need to modify your schema to include a materialized view or a dedicated table that allows querying by recipe name.
+
+Let's assume you want to create a materialized view to support querying recipes by name. Here's how you might do it:
+
+CREATE MATERIALIZED VIEW recipe.recipes_by_recipe_name AS
+SELECT name, description, number_of_steps, nutrition, steps, AVG(score) AS average_rating
+FROM recipe.recipes
+WHERE name IS NOT NULL
+PRIMARY KEY (name);
+
+This materialized view would allow you to query recipes by name. However, please be aware that materialized views come with their own set of considerations and limitations, and they might not be suitable for all use cases. Also, note that the average rating is being calculated using the AVG(score) function.
+
+After creating this materialized view, you can use the following query to retrieve the details for the "chic greek salad" recipe:
+
+SELECT name, description, number_of_steps, nutrition, steps, average_rating
+FROM recipe.recipes_by_recipe_name
+WHERE name = 'chic greek salad';
+
+
+
+3. -----------------------------------------
+Εμφάνιση των ταινιών της κατηγορίας «εύκολη» ταξινομημένες ως προς τη μέση βαθμολογία τους 
+(εδώ θα πρέπει να φτιάξετε μόνοι σας την κατηγορία για κάθε ταινία – προτείνεται ένας απλός αλγόριθμος 
+όπου η κάθε συνταγή λαμβάνει ένα σκορ πλήθος_βημάτων x χρόνος_παρασκευής και στη συνέχεια διαχωρισμός των ταινιών σε 4 κατηγορίες 
+ανάλογα με το εύρος των τιμών που θα παραχθούν)
+---------------------------------------------
+
+
+
+
+
+
+
+4. -------------------------------------------
+Εμφάνιση των συνταγών που περιέχουν την ετικέτα “slow-cooker” με ταξινόμηση ανά ημερομηνία προσθήκης (πιο πρόσφατες πρώτα)
+----------------------------------------------
+
+SELECT name, date_submitted
+FROM recipe.recipes_by_tag
+WHERE tags = {'slow-cooker'}
+ORDER BY date_submitted DESC;
+
+InvalidRequest: Error from server: code=2200 [Invalid query] message="Order by is currently only supported on the clustered columns of the PRIMARY KEY, got date_submitted"
+
+
+5. -----------------------------------------------------------------------------------------------
+Εμφάνιση των 20 συνταγών με την υψηλότερη μέση βαθμολογία για την ετικέτα “cocktail”.       -->>> cocktails
+------------------------------------------------------------------------------------------
+
+
+SELECT name, AVG(score) AS average_rating
+FROM recipe.recipes_by_tag
+WHERE tags = {'cocktail'}
+GROUP BY name
+ORDER BY average_rating DESC
+LIMIT 20;
+
+
+SELECT name, AVG(score) AS average_rating
+FROM recipes_by_tag
+WHERE tags = {'cocktails'}
+GROUP BY name
+LIMIT 20;     
+
+SELECT *
+FROM recipe.recipes_by_tag
+WHERE tags = {'cocktails'}
+GROUP BY name
+LIMIT 20;                                                               
+
+
+
+

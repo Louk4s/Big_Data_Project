@@ -4,20 +4,20 @@ DROP KEYSPACE IF EXISTS recipe;
 CREATE KEYSPACE recipe 
 WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1};
 
-CREATE TABLE recipe.recipes_by_date_submitted (
-	date_submitted date,
+CREATE TABLE recipe.recipes_by_month_submitted (
+	month_submitted text,
 	score float,
 	id int,
 	name text,
-	PRIMARY KEY ((date_submitted), score, id)
+	PRIMARY KEY ((month_submitted), score, id)
 ) WITH comment = 'Q1. Show popular recipes within a three months period'
 AND CLUSTERING ORDER BY (score DESC, id ASC); 
 
 //'Q2. Search recipes by title/name'
-CREATE MATERIALIZED VIEW recipe.recipes_by_name AS
-SELECT * FROM recipe.recipes_by_date_submitted
-WHERE name IS NOT NULL AND score IS NOT NULL AND id IS NOT NULL AND date_submitted IS NOT NULL
-PRIMARY KEY ((name), score, id, date_submitted);
+//CREATE MATERIALIZED VIEW recipe.recipes_by_name AS
+//SELECT * FROM recipe.recipes_by_score
+//WHERE name IS NOT NULL AND score IS NOT NULL AND id IS NOT NULL AND date_submitted IS NOT NULL
+//PRIMARY KEY ((name), score, id, date_submitted);
 
 CREATE TABLE recipe.recipes_by_difficulty (
 	difficulty text,
@@ -45,7 +45,7 @@ CREATE TABLE recipe.recipes(
 	number_of_ingredients smallint,
 	difficulty text,
 	PRIMARY KEY ((name), id)
-) WITH comment = 'Q4. View Recipe Details'
+) WITH comment = 'Q2/Q4. Search For Recipe/View Recipe Details'
 AND CLUSTERING ORDER BY (id ASC);
 
 CREATE TABLE recipe.recipes_by_tag (

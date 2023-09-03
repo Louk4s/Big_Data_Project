@@ -19,13 +19,13 @@ WHERE difficulty='easy';
 
 //Q4
 SELECT name, tags, date_submitted
-FROM recipe.recipes_by_tag
+FROM recipe.recipes_by_tags
 WHERE tags CONTAINS 'crock-pot-slow-cooker'
-ORDER BY date_submitted;
+ALLOW FILTERING;
 
 //Q5
 SELECT name, score
-FROM recipe.recipes_by_tag
+FROM recipe.recipes_by_tags_by_score
 WHERE tags CONTAINS 'cocktail'
-ORDER BY score DESC
-LIMIT 20;
+LIMIT 20
+ALLOW FILTERING;

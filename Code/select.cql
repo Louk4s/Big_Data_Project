@@ -25,7 +25,6 @@ ORDER BY date_submitted;
 
 //Q5
 SELECT name, tag, score
-FROM recipe.recipes_by_tag
+FROM recipe.recipes_by_tag_by_score
 WHERE tag = 'cocktail'
-ORDER BY score DESC
 LIMIT 20;

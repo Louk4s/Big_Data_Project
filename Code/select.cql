@@ -18,14 +18,14 @@ SELECT name, difficulty, score FROM recipe.recipes_by_difficulty
 WHERE difficulty='easy';
 
 //Q4
-SELECT name, tags, date_submitted
+SELECT name, tag, date_submitted
 FROM recipe.recipes_by_tag
-WHERE tags CONTAINS 'crock-pot-slow-cooker'
+WHERE tag = 'crock-pot-slow-cooker'
 ORDER BY date_submitted;
 
 //Q5
-SELECT name, score
+SELECT name, tag, score
 FROM recipe.recipes_by_tag
-WHERE tags CONTAINS 'cocktail'
+WHERE tag = 'cocktail'
 ORDER BY score DESC
 LIMIT 20;

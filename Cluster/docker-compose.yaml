@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  cassandra1:
+    image: cassandra:latest
+    container_name: cassandra1
+    ports:
+      - "9042:9042"
+    environment:
+      - CASSANDRA_SEEDS=cassandra1,cassandra2,cassandra3
+    networks:
+      - cassandra-network
+    volumes:
+      - ./Data/Data1:/var/lib/cassandra
+      - ../doc:/opt/cassandra/doc
+      - ./config/config1/cassandra.yaml:/etc/cassandra/cassandra.yaml
+  cassandra2:
+    image: cassandra:latest
+    container_name: cassandra2
+    ports:
+      - "9043:9042"
+    environment:
+      - CASSANDRA_SEEDS=cassandra1,cassandra2,cassandra3
+    networks:
+      - cassandra-network
+    volumes:
+      - ./Data/Data2:/var/lib/cassandra
+      - ../doc:/opt/cassandra/doc
+      - ./config/config2/cassandra.yaml:/etc/cassandra/cassandra.yaml
+  cassandra3:
+    image: cassandra:latest
+    container_name: cassandra3
+    ports:
+      - "9044:9042"
+    environment:
+      - CASSANDRA_SEEDS=cassandra1,cassandra2,cassandra3
+    networks:
+      - cassandra-network
+    volumes:
+      - ./Data/Data3:/var/lib/cassandra
+      - ../doc:/opt/cassandra/doc
+      - ./config/config3/cassandra.yaml:/etc/cassandra/cassandra.yaml
+
+networks:
+  cassandra-network:
+    driver: bridge

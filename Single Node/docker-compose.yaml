@@ -7,7 +7,7 @@ services:
       - 9042:9042
     volumes:
       - ./Data:/var/lib/cassandra
-      - ./doc:/opt/cassandra/doc
+      - ../doc:/opt/cassandra/doc
       - ./config/cassandra.yaml:/etc/cassandra/cassandra.yaml
     environment:
       - CASSANDRA_CLUSTER_NAME=cloudinfra

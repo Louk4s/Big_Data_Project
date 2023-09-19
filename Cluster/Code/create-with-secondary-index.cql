@@ -18,7 +18,6 @@ CREATE TABLE recipe.recipes_by_difficulty (
 	score float,
 	id int,
 	name text,
-	date_submitted date,
 	PRIMARY KEY (difficulty, score, id)
 ) WITH comment = 'Q3. Search recipes by difficulty'
 AND CLUSTERING ORDER BY (score DESC, id ASC);
@@ -45,12 +44,12 @@ AND CLUSTERING ORDER BY (id ASC);
 CREATE TABLE recipe.recipes_by_tag (
 	tag text,
 	date_submitted date,
-	score float,
 	id int,
+	score float,
 	name text,
-	PRIMARY KEY ((tag), date_submitted, score, id)
+	PRIMARY KEY ((tag), date_submitted, id)
 ) WITH comment = 'Q6. View recipes by date added related to a specific tag'
-AND CLUSTERING ORDER BY (date_submitted DESC, score DESC, id ASC);
+AND CLUSTERING ORDER BY (date_submitted DESC, id ASC);
 
 //'Q5. Search recipes by title/name'
 CREATE INDEX recipes_by_tag_by_score ON recipe.recipes_by_tag(score);

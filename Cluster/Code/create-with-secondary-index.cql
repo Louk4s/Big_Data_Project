@@ -2,7 +2,7 @@
 
 DROP KEYSPACE IF EXISTS recipe;
 CREATE KEYSPACE recipe 
-WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 2};
+WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 3};
 
 CREATE TABLE recipe.recipes_by_month_submitted (
 	month_submitted text,

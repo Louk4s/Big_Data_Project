@@ -1,4 +1,4 @@
-//Q1
+//Question 1
 PAGING OFF;
 SELECT name, month_submitted, score
 FROM recipe.recipes_by_month_submitted 
@@ -7,24 +7,24 @@ ORDER BY score DESC
 LIMIT 30;
 PAGING ON;
 
-//Q2
+//Question 2
 SELECT name, difficulty, nutrition, steps, description, score  
 FROM recipe.recipes
 WHERE name = 'chic greek salad'
 LIMIT 1;
 
-//Q3
+//Question 3
 SELECT name, difficulty, score FROM recipe.recipes_by_difficulty
 WHERE difficulty='easy';
 
-//Q4
+//Question 4
 SELECT name, tag, date_submitted
 FROM recipe.recipes_by_tag
 WHERE tag = 'crock-pot-slow-cooker'
 ORDER BY date_submitted;
 
-//Q5
+//Question 5
 SELECT name, tag, score
 FROM recipe.recipes_by_tag_by_score
-WHERE tag = 'cocktail'
+WHERE tag = 'cocktails'
 LIMIT 20;

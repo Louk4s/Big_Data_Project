@@ -10,18 +10,15 @@ CREATE TABLE recipe.recipes_by_month_submitted (
 	id int,
 	name text,
 	PRIMARY KEY ((month_submitted), score, id)
-) WITH comment = 'Q1. Show popular recipes within a three months period'
-AND CLUSTERING ORDER BY (score DESC, id ASC); 
+) WITH CLUSTERING ORDER BY (score DESC, id ASC); 
 
 CREATE TABLE recipe.recipes_by_difficulty (
 	difficulty text,
 	score float,
 	id int,
 	name text,
-	date_submitted date,
 	PRIMARY KEY (difficulty, score, id)
-) WITH comment = 'Q3. Search recipes by difficulty'
-AND CLUSTERING ORDER BY (score DESC, id ASC);
+) WITH CLUSTERING ORDER BY (score DESC, id ASC);
 
 CREATE TABLE recipe.recipes(
 	name text,
@@ -39,20 +36,17 @@ CREATE TABLE recipe.recipes(
 	number_of_ingredients smallint,
 	difficulty text,
 	PRIMARY KEY ((name), id)
-) WITH comment = 'Q2/Q4. Search For Recipe/View Recipe Details'
-AND CLUSTERING ORDER BY (id ASC);
+) WITH CLUSTERING ORDER BY (id ASC);
 
 CREATE TABLE recipe.recipes_by_tag (
 	tag text,
 	date_submitted date,
-	score float,
 	id int,
+	score float,
 	name text,
-	PRIMARY KEY ((tag), date_submitted, score, id)
-) WITH comment = 'Q6. View recipes by date added related to a specific tag'
-AND CLUSTERING ORDER BY (date_submitted DESC, score DESC, id ASC);
+	PRIMARY KEY ((tag), date_submitted, id)
+) WITH CLUSTERING ORDER BY (date_submitted DESC, id ASC);
 
-//'Q5. Search recipes by title/name'
 CREATE MATERIALIZED VIEW recipe.recipes_by_tag_by_score AS
 SELECT * FROM recipe.recipes_by_tag
 WHERE tag IS NOT NULL AND date_submitted IS NOT NULL AND score IS NOT NULL AND id IS NOT NULL AND name IS NOT NULL
